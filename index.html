@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roberto Carlos Tientcheu - CV Interactif S&OP Analyst</title>
+    <!-- Importation de React et ReactDOM via CDN -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Importation de Babel pour transformer le JSX en JavaScript natif -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Importation de Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Importation des icônes Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Configuration Tailwind pour utiliser la police Inter -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+          }
+        }
+      }
+    </script>
+</head>
+<body class="bg-gray-100 font-sans">
+    <div id="root">
+        <!-- L'application React sera injectée ici -->
+        <div style="text-align: center; padding-top: 50px;">Chargement du CV interactif...</div>
+    </div>
+
+    <!-- Le code JavaScript/JSX de votre CV -->
+    <script type="text/babel">
+      
+      const { useState, useCallback } = React;
+      const { 
+        Globe, Mail, MapPin, Award, Briefcase, GraduationCap, Download,
+        Github, Layers, Smartphone, TrendingUp, Zap, Database,
+        CheckCircle, BarChart3, Users, Cpu, FileText, BookOpen
+      } = lucide; // Utilisation de l'objet global lucide
+
+      // Lien GitHub pour les Business Cases sans lien individuel
+      const DEFAULT_GH_LINK = "https://github.com/Carlos25-afq?tab=repositories";
+
+      // --- Définition du Contenu Multilingue ---
+      const CV_CONTENT = {
+        fr: {
+          name: "ROBERTO CARLOS TIENTCHEU",
+          title: "Demand Planner | S&OP Analyst | Supply Chain Data & Predictive Analytics",
+          contact: {
+            location: "Paris, France",
+            email: "tnrc.2025@gmail.com",
+            linkedin: "linkedin.com/in/robertotientcheu",
+            github: "https://github.com/Carlos25-afq",
+            phone: "+33 7 45 68 70 84",
+          },
+          profile: {
+            title: "RÉSUMÉ PROFESSIONNEL",
+            text: "Demand Planner et S&OP Analyst avec **plus de 2 ans** d'expérience consolidée en environnement industriel et ONG, spécialisé en modélisation statistique avancée et en transformation digitale data-driven de la Supply Chain. Je conçois et pilote des cycles S&OP de bout en bout et maîtrise les techniques de *Risk-Based Forecasting* (ARIMA, SARIMA, Holt-Winters, Modèles Causalité) et l'automatisation par Python, R et Power BI. Grâce à l'analyse de millions de lignes de données (Unilever, IKEA, Agroalimentaire), j'ai démontré une capacité à générer des prévisions fiables, optimiser les stocks de sécurité, et orchestrer l'alignement stratégique. Résultats quantifiables : amélioration de **+8 pts du Forecast Accuracy**, **€59k d'économies Lean**, et réduction de **–70 % du temps de reporting**. Passionné par l'intégration de l'IA (RPA, *Demand Sensing*) pour une supply chain plus performante et durable."
+          },
+          skills: {
+            title: "COMPÉTENCES CLÉS (Méthodes, Outils et Processus)",
+            categories: [
+              {
+                name: "Demand Planning et Predictive Analytics",
+                items: [
+                  "Modélisation avancée : ARIMA, SARIMA, Holt-Winters, Croston, exponential smoothing",
+                  "Segmentation ABC/XYZ, CV volatilité, ramp-up NPI, Demand Sensing (ML)",
+                  "Optimisation stock : Safety Stock (méthodes stat. avancées), Min/Max, DOS",
+                  "KPI Quantitatifs : MAPE, WAPE, BIAS, MAD, Tracking Signal, FVA, Stock Turnover",
+                  "Analyse promotions : uplift réel vs cible, élasticité prix-volume",
+                ]
+              },
+              {
+                name: "S&OP et Process Excellence",
+                items: [
+                  "Pilotage S&OP complet : Demand Review, Supply Review, Pre-S&OP, Executive (12 cycles)",
+                  "Lean Manufacturing et Amélioration Continue : DMAIC, VSM, 5S, Kaizen",
+                  "Automatisation Processus (RPA) : Conception de flux simples d'automatisation des tâches répétitives.",
+                  "Soft Skills : *Stakeholder Management*, coordination interservices (Ventes:Finance:Production), *Change Management*.",
+                ]
+              },
+              {
+                name: "Data, BI et Modélisation Statistique",
+                items: [
+                  "Power BI (Expert) : DAX avancé, Power Query M, modèles tabulaires (schéma étoile), RLS",
+                  "Python : pandas, numpy, statsmodels, sklearn (RF:XGBoost, Modèles Causalité)",
+                  "SQL : requêtes complexes, ETL, optimisation de requêtes",
+                  "R / Stata : Tidyverse, forecast, séries temporelles (expertise économétrie)",
+                  "Excel (Expert) : Power Pivot, TCD, VBA, *Google Workspace* et *Google Apps Script* (Maîtrise approfondie).",
+                ]
+              },
+              {
+                name: "ERP, Performance et Durabilité",
+                items: [
+                  "Systèmes ERP : SAP S/4HANA (MM | PP | SD), Sage X3 (flux supply, inventaire, MRP)",
+                  "KPI End-to-End : OTIF, Fill Rate, Lead Time, Cost-to-Serve",
+                  "Durabilité : Reverse logistics, ESPR (UE 2026), empreinte carbone et conformité ESG",
+                ]
+              }
+            ]
+          },
+          experience: {
+            title: "EXPÉRIENCE PROFESSIONNELLE",
+            jobs: [
+              {
+                title: "Assistant Pilotage Performance Supply Chain",
+                company: "SOCOMORE (Groupe Aéronautique & Chimie)",
+                period: "Oct 2024 – Oct 2025",
+                location: "5 sites : 300+ SKUs : CA : 12M€",
+                achievements: [
+                  "Pilotage S&OP (cycle complet, 12 cycles) : J'ai facilité le consensus (One-Number Plan) et mené des arbitrages Production/Stocks (*via Excel Solver*) évitant **8 ruptures critiques** (**€45k pertes évitées**). Résultat : Réduction des ruptures (**15 % → 7 %**), amélioration du service level (**87 % → 93 %**).",
+                  "Optimisation Demand Planning : Amélioration du forecast accuracy : **85 % → 93 % (+8 pts)** via Holt-Winters et segmentation. J'ai créé des alertes variance Power BI pour la détection d'anomalies.",
+                  "Pilotage stratégique performance : Conception de 5 dashboards Power BI (OTIF, stock turnover, coûts logistiques) pour la Direction, avec analyse *root cause (5 Whys)*.",
+                  "2 projets DMAIC Lean Manufacturing générant **€59k économies/an** : J'ai optimisé les tournées transport (**–12 % CO₂**, taux remplissage 68%→85%) et mené la réorganisation 5S entrepôt (**–9 % temps de préparation**)."
+                ]
+              },
+              {
+                title: "Analyste Supply Chain — Stage de Fin d'Études (Haut Niveau de Responsabilité)",
+                company: "SOCOMORE",
+                period: "Mai 2024 – Oct 2024",
+                location: "Automatisation reporting et structuration pilotage performance",
+                achievements: [
+                  "Automatisation complète reporting : Construction de 10+ dashboards Power BI connectés SAP S/4HANA et X3 (refresh auto). Résultat : Réduction du temps de reporting : **6h → 1h30/sem. (–70 % effort)**, réallouant le temps à l'analyse à valeur ajoutée.",
+                  "Architecture Data BI : Structuration du modèle tabulaire (schéma étoile) pour les KPIs. J'ai géré le nettoyage, la transformation des données (*Power Query M*) et mis en place des calculs DAX avancés (time intelligence).",
+                  "Support S&OP : J'ai assuré le tracking MAPE, la détection proactive des risques ruptures/surstocks, et la consolidation des inputs commerciaux (promotions, NPI) sur 6 cycles, jouant un rôle pivot entre les ventes et la production."
+                ]
+              },
+              {
+                title: "Analyste Quantitatif : Économie et Stratégie",
+                company: "PNUD (Programme des Nations Unies pour le Développement)",
+                period: "Juil 2023 – Oct 2023",
+                location: "Unité Stratégie et Politiques Macroéconomiques",
+                achievements: [
+                  "Modélisation des risques : J'ai modélisé les risques macroéconomiques (inflation, taux change, disruptions logistiques) via **R:Stata:Eviews** pour évaluer l'impact sur les chaînes d'approvisionnement. Ces analyses quantitatives ont été partagées avec l'Unité Financement du Développement et l'Unité d'Évaluation des Politiques Publiques.",
+                  "Analyse Data : J'ai analysé des *datasets massifs* (**1M+ lignes**) pour l'évaluation de politiques publiques. J'ai rédigé **2 notes stratégiques** détaillant les impacts quantitatifs pour la direction.",
+                ]
+              },
+              {
+                title: "Analyste Suivi-Performance",
+                company: "GRETA / Chambre de Commerce",
+                period: "Fév 2022 – Jan 2023",
+                location: "Gestion projets multi-bailleurs (€1.2M)",
+                achievements: [
+                  "Maîtrise Excel Avancée : J'ai construit et géré des bases de données relationnelles complexes sous **Excel** (VBA, Power Pivot) pour le suivi financier et opérationnel de 4 projets, garantissant l'intégrité des données.",
+                  "Construction KPI et Automatisation : Élaboration de cadres de performance robustes (*KPI frameworks*). J'ai automatisé **4 rapports mensuels** (dashboards, analyse d'écarts) pour les bailleurs via la maîtrise de *Google Apps Script*.",
+                ]
+              }
+            ]
+          },
+          education: {
+            title: "FORMATION et CERTIFICATIONS",
+            degrees: [
+              {
+                degree: "Master Supply Chain Management",
+                school: "Université Paris Panthéon-Assas",
+                period: "2023-2024",
+                details: "Mémoire de fin d'études : **Impact d'une approche S&OP digitale, intégrant l'intelligence artificielle, sur les performances de la Supply Chain**. Spécialisations : **S&OP (Pilotage E2E)**, **IA et RPA** (concepts), Performance SC, Logistique Durable, *Risk Management*."
+              },
+              {
+                degree: "Maîtrise Économétrie Appliquée",
+                school: "Université de Douala",
+                period: "2021-2022",
+                details: "Expertise : **Modèles statistiques avancés** (ARIMA, SARIMA, causalité) appliqués au *Forecasting*. Maîtrise avancée de **Python**, **R** et **Stata** (séries temporelles : ARIMA, SARIMA, lissage exponentiel, causalité)."
+              },
+              {
+                degree: "Master 1 Gestion et Évaluation de Projets",
+                school: "ESSEC Douala",
+                period: "2022-2023",
+                details: "Focus : Amélioration continue (Lean, Six Sigma), cadres de performance (*KPI frameworks*), gestion cycle projet complet (planification, exécution, monitoring, clôture)."
+              },
+              {
+                degree: "MSc Politique Commerciale Internationale",
+                school: "TRAPCA (Tanzanie)",
+                period: "Fév - Mar 2024",
+                details: "Modules : Analyse quantitative flux commerciaux, conformité douanière (*Incoterms*, HS codes), stratégies sourcing global."
+              },
+            ],
+            certs: [
+              { name: "Microsoft Power BI Data Analyst Professional Certificate", date: "2024", details: "Modélisation données complexes, ETL avancé Power Query M, mesures DAX avancées (*time intelligence*, calculs contextuels), *Data Governance*." },
+              { name: "Unilever Supply Chain Data Analyst Specialization", date: "2024", details: "Demand forecasting (méthodes stat.), analyse coûts logistiques (*cost-to-serve*), inventory optimization (*EOQ, safety stock*), VSM." },
+              { name: "Pilotez votre Reverse Supply Chain - OpenClassrooms", date: "2024", details: "Analyse retours produits, processus reconditionnement/revalorisation, intégration *économie circulaire*, conformité ESG." },
+              { name: "IBM Data Analytics with Excel and R", date: "2025", details: "Excel expert (*Pivot Tables, Power Pivot*), **R (Tidyverse)** pour manipulation et analyse statistique." },
+            ]
+          },
+          business_cases: {
+            title: "BUSINESS CASES et PROJETS AVANCÉS",
+            sectors: {
+              title: "Secteurs d’Intérêt et Expertise",
+              items: [
+                { name: "Agroalimentaire et FMCG (Priorité)", details: "Expertise sur les produits saisonniers, les promotions, la gestion de large portfolio et la volatilité des prix. Circuits : GMS, Hard Discount, E-commerce." },
+                { name: "Industrie Aéronautique et Défense", details: "Expérience avec les SKUs critiques, les exigences de qualité stricte et la gestion de la supply tensionnée." },
+                { name: "Chimie de spécialité", details: "Connaissance des flux dangereux, de la conformité réglementaire et nécessité de précision planning." },
+                { name: "Retail et Distribution", details: "Analyse enseignes (Carrefour, Leclerc, Lidl, Amazon), expertise en forecast promotionnel." },
+              ]
+            },
+            cases: [
+              {
+                name: "Advanced Demand Forecasting et Supply Chain Optimization : Projet Python",
+                context: "Projet complet Python (*segmentation, modélisation, risques, causalité*) démontrant des compétences avancées en *Risk-Based Forecasting* et *S&OP Data*.",
+                details: [
+                  "Méthodologie : Préparation données (ETL SQL/M), segmentation **ABC/XYZ** (39 % classe A = 79.81 % CA), modélisation causale (R²), décomposition *Cost-to-Serve*.",
+                  "Résultats clés : Quantification des risques supply et financiers : **COQ = $996,950** (risque qualité), **LT CV = 57.86** (fournisseur instable), **Safety Stock Gap = 8,764 unités**.",
+                  "Compétences : Python (segmentation, modèles causaux, scoring), SQL/M (ETL), Power BI (intégration KPI), Excel/VBA."
+                ],
+                link: "https://github.com/Carlos25-afq"
+              },
+              {
+                name: "Business Case FMCG International (UNILEVER)",
+                context: "Analyse des données de prévisions et de ventes sur **3 millions de lignes** pour optimiser le processus S&OP et la prévision de la demande sur les marchés EMEA.",
+                details: [
+                  "Analyse des tendances 36 mois, de l'impact promotionnel (uplift) et de la saisonnalité.",
+                  "Simulation de l'impact des variations de *Forecast Accuracy* sur le *Working Capital*.",
+                  "Construction d'un dashboard de pilotage de la performance S&OP."
+                ],
+                link: DEFAULT_GH_LINK
+              },
+              {
+                name: "Business Case Retail Global (IKEA)",
+                context: "Analyse des données d'inventaire et de logistique sur **1.5 million de lignes** pour déterminer les stratégies d'optimisation des stocks et de la distribution globale.",
+                details: [
+                  "Segmentation des SKUs par volatilité (XYZ) pour appliquer des politiques de *Safety Stock* différenciées.",
+                  "Analyse des coûts logistiques et modélisation de l'impact des délais de transport sur le taux de service.",
+                  "Évaluation des risques de surstock et obsolescence pour les gammes à faible rotation."
+                ],
+                link: DEFAULT_GH_LINK
+              },
+              {
+                name: "Business Case EMEA – 13 pays, 120 000 lignes (GlobalAgri Foods)",
+                context: "Analyse multinatinonale complète pour l'élaboration d'un Dashboard exécutif S&OP.",
+                details: [
+                  "Analyse des tendances 36 mois, des circuits de distribution, de la saisonnalité et des promotions pour 13 pays.",
+                  "Scoring PO (Purchasing Orders) et analyse des risques supply/retards usines.",
+                ],
+                link: DEFAULT_GH_LINK
+              },
+            ]
+          }
+        },
+        // Contenu en anglais
+        en: {
+          name: "ROBERTO CARLOS TIENTCHEU",
+          title: "Demand Planner | S&OP Analyst | Supply Chain Data & Predictive Analytics",
+          contact: {
+            location: "Paris, France",
+            email: "tnrc.2025@gmail.com",
+            linkedin: "linkedin.com/in/robertotientcheu",
+            github: "https://github.com/Carlos25-afq",
+            phone: "+33 7 45 68 70 84",
+          },
+          profile: {
+            title: "PROFESSIONAL SUMMARY",
+            text: "Demand Planner & S&OP Analyst with **2+ years** of consolidated experience in industrial and NGO environments, specializing in advanced statistical modeling and data-driven digital Supply Chain transformation. I design and steer end-to-end S&OP cycles and master *Risk-Based Forecasting* techniques (ARIMA, SARIMA, Holt-Winters, Causal Models) and automation using Python, R, and Power BI. Through analyzing millions of data rows (Unilever, IKEA, Agri-Food), I have demonstrated the ability to deliver reliable forecasts, optimize safety stocks, and orchestrate strategic alignment. Quantifiable results: **+8 pts improvement in Forecast Accuracy**, **€59k Lean savings**, and **–70% reduction in reporting time**. Passionate about integrating AI (RPA, *Demand Sensing*) for a more performant and sustainable supply chain."
+          },
+          skills: {
+            title: "KEY SKILLS (Methods, Tools and Processes)",
+            categories: [
+              {
+                name: "Demand Planning and Predictive Analytics",
+                items: [
+                  "Advanced Modeling: ARIMA, SARIMA, Holt-Winters, Croston, exponential smoothing",
+                  "ABC/XYZ Segmentation, CV volatility, NPI ramp-up, Demand Sensing (ML)",
+                  "Inventory Optimization: Safety Stock (advanced stat. methods), Min/Max, DOS",
+                  "Quantitative KPIs: MAPE, WAPE, BIAS, MAD, Tracking Signal, FVA, Stock Turnover",
+                  "Promotion Analysis: actual vs target uplift, price-volume elasticity",
+                ]
+              },
+              {
+                name: "S&OP and Process Excellence",
+                items: [
+                  "Full S&OP Steering: Demand Review, Supply Review, Pre-S&OP, Executive (12 cycles)",
+                  "Lean Manufacturing and Continuous Improvement: DMAIC, VSM, 5S, Kaizen",
+                  "Robotic Process Automation (RPA): Design of simple automation flows for repetitive tasks.",
+                  "Soft Skills: *Stakeholder Management*, cross-functional coordination (Sales:Finance:Production), *Change Management*.",
+                ]
+              },
+              {
+                name: "Data, BI and Statistical Modeling",
+                items: [
+                  "Power BI (Expert): Advanced DAX, Power Query M, tabular models (star schema), RLS",
+                  "Python: pandas, numpy, statsmodels, sklearn (RF:XGBoost, Causal Models)",
+                  "SQL: complex queries, ETL, query optimization",
+                  "R / Stata: Tidyverse, forecast, time series (econometrics expertise)",
+                  "Excel (Expert): Power Pivot, Pivot Tables, VBA, *Google Workspace* and *Google Apps Script* (In-depth mastery).",
+                ]
+              },
+              {
+                name: "ERP, Performance and Sustainability",
+                items: [
+                  "ERP Systems: SAP S/4HANA (MM | PP | SD), Sage X3 (supply flows, inventory, MRP)",
+                  "End-to-End KPIs: OTIF, Fill Rate, Lead Time, Cost-to-Serve",
+                  "Sustainability: Reverse logistics, ESPR (EU 2026), carbon footprint and ESG compliance",
+                ]
+              }
+            ]
+          },
+          experience: {
+            title: "PROFESSIONAL EXPERIENCE",
+            jobs: [
+              {
+                title: "Supply Chain Performance Management Assistant",
+                company: "SOCOMORE (Aerospace & Chemicals Group)",
+                period: "Oct 2024 – Oct 2025",
+                location: "5 sites : 300+ SKUs : Revenue: €12M",
+                achievements: [
+                  "S&OP Steering (12 full cycles): Facilitated consensus (One-Number Plan) and led Production/Stock arbitration (*via Excel Solver*) avoiding **8 critical stock-outs** (**€45k losses avoided**). **Result:** Reduced stock-outs (**15% → 7%**) and improved service level (**87% → 93%**).",
+                  "Demand Planning Optimization: Improved forecast accuracy: **85% → 93% (+8 pts)** via Holt-Winters and segmentation. Created Power BI variance alerts for anomaly detection.",
+                  "Strategic Performance Management: Designed 5 Power BI dashboards (OTIF, stock turnover, logistics costs) for Management, including *root cause (5 Whys) analysis*.",
+                  "2 DMAIC Lean Projects generating **€59k annual savings**: Optimized transport routes (**–12% CO₂**, fill rate 68%→85%) & 5S warehouse reorganization (**–9% prep time**)."
+                ]
+              },
+              {
+                title: "Supply Chain Analyst — Graduate Internship (High-Level Responsibility)",
+                company: "SOCOMORE",
+                period: "May 2024 – Oct 2024",
+                location: "Reporting automation and performance management structuring",
+                achievements: [
+                  "Full Reporting Automation: Built 10+ Power BI dashboards connected to SAP S/4HANA and X3 (auto-refresh). **Result:** Reduced reporting time: **6h → 1.5h/week (–70% effort)**, reallocating time to value-added analysis.",
+                  "BI Data Architecture: Structured tabular model (star schema) for KPIs. Managed data cleaning and transformation (*Power Query M*) and implemented advanced DAX calculations (time intelligence).",
+                  "S&OP Support: Ensured MAPE tracking, proactive stock-out/overstock risk detection, and consolidation of commercial inputs (promotions, NPI) across 6 cycles, serving as a pivot between sales and production."
+                ]
+              },
+              {
+                title: "Quantitative Analyst: Economics and Strategy",
+                company: "UNDP (United Nations Development Programme)",
+                period: "Jul 2023 – Oct 2023",
+                location: "Strategy and Macroeconomic Policies Unit",
+                achievements: [
+                  "Advanced Modeling: Modeled macroeconomic risks (inflation, exchange rate, disruptions) via **R:Stata:Eviews** to assess supply risk impact. Analysis shared with Development Finance Unit and Public Policy Evaluation Unit.",
+                  "Data Analysis: Analyzed *massive datasets* (1M+ rows) for public policy evaluation. Drafted 2 strategic briefs detailing quantitative impacts for management.",
+                ]
+              },
+              {
+                title: "Performance Monitoring Analyst",
+                company: "GRETA / Chamber of Commerce",
+                period: "Feb 2022 – Jan 2023",
+                location: "Multi-donor project management (€1.2M)",
+                achievements: [
+                  "Advanced Excel Mastery: Built and managed complex relational databases in **Excel** (VBA, Power Pivot) for financial and operational tracking of 4 projects.",
+                  "KPI Construction & Automation: Developed robust performance frameworks (*KPI frameworks*). Automated 4 monthly reports (dashboards, variance analysis) for donors using advanced *Google Apps Script*.",
+                ]
+              }
+            ]
+          },
+          education: {
+            title: "EDUCATION and CERTIFICATIONS",
+            degrees: [
+              {
+                degree: "Master Supply Chain Management",
+                school: "Paris Panthéon-Assas University",
+                period: "2023-2024",
+                details: "Master's Thesis: **Impact of a Digital S&OP approach, integrating Artificial Intelligence, on Supply Chain performance**. Specializations: **S&OP (E2E Steering)**, **AI and RPA** (concepts), SC Performance, Sustainable Logistics, *Risk Management*."
+              },
+              {
+                degree: "Master Applied Econometrics",
+                school: "University of Douala",
+                period: "2021-2022",
+                details: "Expertise: **Advanced statistical models** (ARIMA, SARIMA, causality) applied to *Forecasting*. Advanced proficiency in **Python**, **R** and **Stata** (time series: ARIMA, SARIMA, exponential smoothing, causality)."
+              },
+              {
+                degree: "Master 1 Project Management & Evaluation",
+                school: "ESSEC Douala",
+                period: "2022-2023",
+                details: "Focus: Continuous Improvement (*Lean, Six Sigma*), performance frameworks (*KPI frameworks*), full project cycle management (planning, execution, monitoring, closing)."
+              },
+              {
+                degree: "MSc International Trade Policy",
+                school: "TRAPCA (Tanzania)",
+                period: "Feb - Mar 2024",
+                details: "Modules: Quantitative analysis of international trade flows, customs compliance (*Incoterms*, HS codes), global sourcing strategies."
+              },
+            ],
+            certs: [
+              { name: "Microsoft Power BI Data Analyst Professional Certificate", date: "2024", details: "Technical Skills: Complex data modeling, Advanced Power Query M ETL, advanced DAX measures (*time intelligence*, contextual calculations), *Data Governance*." },
+              { name: "Unilever Supply Chain Data Analyst Specialization", date: "2024", details: "Acquired Skills: Demand forecasting (statistical methods), logistics cost analysis (*cost-to-serve*), inventory optimization (*EOQ, safety stock*), VSM." },
+              { name: "Manage Your Reverse Supply Chain - OpenClassrooms", date: "2024", details: "Topics: Product returns analysis, reconditioning/revaluation processes, *circular economy* integration, ESG compliance." },
+              { name: "IBM Data Analytics with Excel and R", date: "2025", details: "Skills: Advanced Excel (*Pivot Tables, Power Pivot*), **R (Tidyverse)** for data manipulation and statistical analysis." },
+            ]
+          },
+          business_cases: {
+            title: "BUSINESS CASES and ADVANCED PROJECTS",
+            sectors: {
+              title: "Industry Focus and Expertise",
+              items: [
+                { name: "Agri-Food & FMCG (Priority)", details: "Expertise on seasonal products, promotions, large portfolio management, and price volatility. Channels: GMS, Hard Discount, E-commerce." },
+                { name: "Aerospace & Defense Industry", details: "Experience with critical SKUs, strict quality requirements, and constrained supply management." },
+                { name: "Specialty Chemicals", details: "Knowledge of hazardous flows, regulatory compliance, and high planning precision needs." },
+                { name: "Retail & Distribution", details: "Retailer analysis (Carrefour, Leclerc, Lidl, Amazon), expertise in promotional forecasting." },
+              ]
+            },
+            cases: [
+              {
+                name: "Advanced Demand Forecasting and Supply Chain Optimization : Python Project",
+                context: "End-to-end Python project (*segmentation, modeling, risk, causality*) demonstrating advanced skills in *Risk-Based Forecasting* and *S&OP Data*.",
+                details: [
+                  "Methodology : Data preparation (ETL SQL/M), **ABC/XYZ segmentation** (39% Class A = 79.81% Revenue), causal modeling (R²), *Cost-to-Serve* decomposition.",
+                  "Key Results : Quantified supply and financial risks: **COQ = $996,950** (critical quality risk), **LT CV = 57.86** (unstable supplier), **Safety Stock Gap = 8,764 units**.",
+                  "Skills : Python (segmentation, causal models, scoring), SQL/M (ETL), Power BI (KPI integration), Excel/VBA."
+                ],
+                link: "https://github.com/Carlos25-afq"
+              },
+              {
+                name: "FMCG International Business Case (UNILEVER)",
+                context: "Analysis of forecasting and sales data across **3 million rows** to optimize S&OP process and demand forecasting in EMEA markets.",
+                details: [
+                  "Analysis of 36-month trends, promotional impact (uplift), and seasonality.",
+                  "Simulation of *Forecast Accuracy* variations impact on *Working Capital*.",
+                  "Construction of an S&OP performance steering dashboard."
+                ],
+                link: DEFAULT_GH_LINK
+              },
+              {
+                name: "Global Retail Business Case (IKEA)",
+                context: "Analysis of inventory and logistics data across **1.5 million rows** to determine strategies for stock optimization and global distribution.",
+                details: [
+                  "SKU segmentation by volatility (XYZ) to apply differentiated *Safety Stock* policies.",
+                  "Analysis of logistics costs and modeling the impact of transport lead times on service level.",
+                  "Evaluation of overstock and obsolescence risks for low-turnover ranges."
+                ],
+                link: DEFAULT_GH_LINK
+              },
+              {
+                name: "EMEA Business Case – 13 countries, 120,000 lines (GlobalAgri Foods)",
+                context: "Comprehensive multinational analysis for developing an Executive S&OP Dashboard.",
+                details: [
+                  "Analysis of 36-month trends, distribution channels, seasonality, and promotions for 13 countries.",
+                  "PO (Purchasing Orders) scoring and analysis of supply risks/factory delays.",
+                ],
+                link: DEFAULT_GH_LINK
+              },
+            ]
+          }
+        }
+      };
+
+      // --- Composants de Réutilisation Simples ---
+
+      // Fix: We use React.createElement(tag, props, children) under the hood. 
+      // Components must be declared as functions or classes outside of the main render logic.
+
+      const SectionTitle = ({ title }) => (
+        <h2 className="text-xl font-bold text-gray-800 border-b-2 border-blue-600 pb-1 mb-4 mt-6 uppercase tracking-wider">{title}</h2>
+      );
+
+      // We need to ensure that SubSectionTitle is also declared properly, using React.memo for stability if possible, or just a function here.
+      // NOTE: Using "function SubSectionTitle" instead of "const SubSectionTitle = ({...})" resolves the issue in this CDN context.
+      function SubSectionTitle({ title, icon: Icon }) {
+        return (
+          <h3 className="text-sm font-extrabold text-gray-900 mb-2 mt-4 flex items-center gap-2">
+            <Icon className="w-4 h-4 text-blue-700 flex-shrink-0" />
+            {title}
+          </h3>
+        );
+      }
+
+      // --- Composant Principal CV Interactif V8 (Final) ---
+
+      const CVInteractifV8 = () => {
+        const [language, setLanguage] = useState('fr');
+        const [downloadMessage, setDownloadMessage] = useState('');
+        const t = CV_CONTENT[language];
+
+        // Classes Tailwind pour le style classique
+        const mainClass = "max-w-4xl mx-auto p-8 bg-white shadow-xl min-h-screen border-t-8 border-blue-700";
+        const itemStyle = "text-sm text-gray-700 leading-relaxed";
+
+        const handleDownload = useCallback(() => {
+          const message = language === 'fr'
+            ? "Génération simulée. Un CV PDF final, complet et optimisé serait généré."
+            : "Simulated generation. A final, complete, and optimized PDF resume would be generated.";
+          
+          setDownloadMessage(message);
+          setTimeout(() => setDownloadMessage(''), 4000); 
+        }, [language]);
+
+        return (
+          <div className="bg-gray-100 font-sans py-10">
+            <div className={mainClass}>
+              
+              {/* Header */}
+              <header className="mb-8 border-b pb-4">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h1 className="text-3xl font-extrabold text-gray-900 tracking-wider mb-1">{t.name}</h1>
+                    <p className="text-lg text-blue-700 font-medium mb-4">{t.title}</p>
+                  </div>
+                  <div className="flex-shrink-0">
+                    <img
+                      src="https://avatars.githubusercontent.com/u/188463812?v=4"
+                      alt={t.name}
+                      className="w-24 h-24 rounded-full object-cover border border-gray-300 shadow-md"
+                    />
+                  </div>
+                </div>
+
+                {/* Contact & Langue */}
+                <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-600 mt-2">
+                  <div className="flex items-center gap-1">
+                    <MapPin className="w-3 h-3 text-blue-600" />
+                    <span>{t.contact.location}</span>
+                  </div>
+                  <a href={`mailto:${t.contact.email}`} className="flex items-center gap-1 hover:text-blue-700 transition-colors">
+                    <Mail className="w-3 h-3 text-blue-600" />
+                    <span>{t.contact.email}</span>
+                  </a>
+                  <a 
+                    href={t.contact.github} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="flex items-center gap-1 hover:text-blue-700 transition-colors"
+                    aria-label="Lien Github"
+                  >
+                    <Github className="w-3 h-3 text-blue-600" />
+                    <span>{t.contact.github.split('//')[1] || t.contact.github}</span> {/* Affiche l'URL nettoyée */}
+                  </a>
+                  <div className="flex items-center gap-1">
+                    <Smartphone className="w-3 h-3 text-blue-600" />
+                    <span>{t.contact.phone}</span>
+                  </div>
+                  <button
+                    onClick={() => setLanguage(language === 'fr' ? 'en' : 'fr')}
+                    aria-label={language === 'fr' ? 'Switch language to English' : 'Changer la langue en Français'}
+                    className="flex items-center gap-1 text-xs text-blue-700 font-semibold hover:text-blue-900 ml-4 border px-2 py-0.5 rounded transition-colors"
+                  >
+                    <Globe className="w-3 h-3" />
+                    <span>{language === 'fr' ? 'EN' : 'FR'}</span>
+                  </button>
+                </div>
+              </header>
+              
+              {/* Profile Section */}
+              <section className="mb-6">
+                <SectionTitle title={t.profile.title} />
+                <p className="text-gray-700 leading-relaxed text-sm">{t.profile.text}</p>
+              </section>
+
+              {/* Competences (Détail maximal) */}
+              <section className="mb-6">
+                <SectionTitle title={t.skills.title} />
+                <div className="grid md:grid-cols-2 gap-x-10 gap-y-4">
+                  {t.skills.categories.map((category, idx) => (
+                    <div key={idx} className="break-inside-avoid">
+                      <SubSectionTitle title={category.name} icon={Layers} />
+                      <ul className="columns-1 space-y-1 list-none pl-0">
+                        {category.items.map((item, i) => (
+                          <li key={i} className={itemStyle}>
+                            <span className="text-blue-600 font-bold mr-1">•</span>
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </section>
+              
+              {/* Experience */}
+              <section className="mb-6">
+                <SectionTitle title={t.experience.title} />
+                {t.experience.jobs.map((job, idx) => (
+                  <div key={idx} className="mb-4 pb-4 border-b border-gray-200 last:border-b-0 last:mb-0">
+                    <div className="flex justify-between items-baseline mb-1">
+                      <h3 className="text-base font-bold text-gray-900">{job.title}</h3>
+                      <span className="text-xs text-gray-500 font-medium">{job.period}</span>
+                    </div>
+                    <div className="text-sm text-blue-700 font-semibold mb-1">{job.company}</div>
+                    <div className="text-xs text-gray-600 italic mb-2">{job.location}</div>
+                    <ul className="space-y-1 text-sm text-gray-700 list-none pl-0">
+                      {job.achievements.map((achievement, i) => (
+                        <li key={i} className="flex gap-2">
+                          <span className="text-blue-600 font-bold flex-shrink-0 mt-0.5">•</span>
+                          <span className="flex-1 leading-relaxed">{achievement}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </section>
+
+              {/* Formations & Certifications (Détaillées) */}
+              <section className="mb-6">
+                <SectionTitle title={t.education.title} />
+                
+                <div className="grid md:grid-cols-2 gap-x-10 gap-y-6">
+                  
+                  {/* Formations Académiques */}
+                  <div>
+                    <SubSectionTitle title={language === 'fr' ? "Parcours Académique" : "Academic Background"} icon={GraduationCap} />
+                    <div className="space-y-4">
+                      {t.education.degrees.map((degree, idx) => (
+                        <div key={idx} className="pb-2 border-b border-gray-100 last:border-b-0">
+                          <div className="flex justify-between items-baseline">
+                            <h3 className="font-bold text-gray-900 text-sm">{degree.degree}</h3>
+                            <div className="text-xs text-gray-500">{degree.period}</div>
+                          </div>
+                          <div className="text-xs text-blue-700 font-medium mb-1">{degree.school}</div>
+                          <p className="text-xs text-gray-600 italic">{degree.details}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Certifications Professionnelles */}
+                  <div>
+                    <SubSectionTitle title={language === 'fr' ? "Certifications Professionnelles" : "Professional Certifications"} icon={Award} />
+                    <ul className="space-y-3 text-sm text-gray-700 list-none pl-0">
+                      {t.education.certs.map((cert, idx) => (
+                        <li key={idx} className="flex flex-col items-start gap-0">
+                          <div className="flex justify-between w-full items-baseline">
+                            <span className="font-semibold text-gray-800 text-sm flex items-center gap-2"><CheckCircle className="w-3 h-3 text-blue-600 flex-shrink-0" /> {cert.name}</span>
+                            <span className="text-xs text-gray-500">{cert.date}</span>
+                          </div>
+                          <p className="text-xs text-gray-600 italic mt-0.5">{cert.details}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </section>
+
+              {/* Business Cases & Secteurs */}
+              <section className="mb-6">
+                <SectionTitle title={t.business_cases.title} />
+                
+                <div className="grid md:grid-cols-3 gap-x-10 gap-y-6">
+                  
+                  {/* Secteurs d'Intérêt */}
+                  <div className="md:col-span-1">
+                    <SubSectionTitle title={t.business_cases.sectors.title} icon={BarChart3} />
+                    <ul className="space-y-2 text-sm text-gray-700 list-none pl-0">
+                      {t.business_cases.sectors.items.map((sector, idx) => (
+                        <li key={idx} className="pb-1">
+                          <span className="font-semibold text-gray-800">{sector.name} :</span>
+                          <p className="text-xs text-gray-600 italic">{sector.details}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Business Cases (2 colonnes) */}
+                  <div className="md:col-span-2">
+                    <SubSectionTitle title={language === 'fr' ? "Réalisations Clés" : "Key Accomplishments"} icon={Database} />
+                    <div className="space-y-5">
+                      {t.business_cases.cases.map((bc, idx) => (
+                        <div key={idx} className="border-l-2 border-blue-200 pl-3">
+                          <h4 className="text-sm font-bold text-gray-900 mb-1">{bc.name}</h4>
+                          <p className="text-xs text-gray-700 italic mb-2">{bc.context}</p>
+                          <ul className="space-y-0.5 text-xs text-gray-700 list-none pl-0">
+                            {bc.details.map((detail, i) => (
+                              <li key={i} className="flex gap-2">
+                                <span className="text-blue-600 font-bold flex-shrink-0 mt-0.5">•</span>
+                                <span className="flex-1 leading-relaxed">{detail}</span>
+                              </li>
+                            ))}
+                          </ul>
+                          {bc.link && (
+                            <a 
+                              href={bc.link} 
+                              target="_blank" 
+                              rel="noopener noreferrer" 
+                              className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1 mt-2 font-medium"
+                            >
+                              <Github className="w-3 h-3" />
+                              <span>{language === 'fr' ? "Voir sur GitHub" : "View on GitHub"}</span>
+                            </a>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </section>
+              
+              {/* Download Button (with mock functionality) */}
+              <div className="mt-8 text-center">
+                  <button 
+                    onClick={handleDownload}
+                    className="bg-blue-600 text-white py-3 px-8 rounded-lg font-semibold shadow-md hover:bg-blue-700 transition-colors flex items-center justify-center mx-auto gap-2"
+                  >
+                    <Download className="w-5 h-5" />
+                    <span>{language === 'fr' ? 'Générer CV (Version PDF)' : 'Generate Resume (PDF Version)'}</span>
+                  </button>
+
+                  {/* Message de confirmation (mock) */}
+                  {downloadMessage && (
+                    <div className="text-center text-sm p-3 bg-blue-50 text-blue-800 rounded-lg shadow-inner mt-4 transition-opacity duration-300">
+                      {downloadMessage}
+                    </div>
+                  )}
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      // Rendu de l'application
+      const root = ReactDOM.createRoot(document.getElementById('root'));
+      root.render(React.createElement(CVInteractifV8));
+    </script>
+</body>
+</html>
